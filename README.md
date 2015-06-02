@@ -1,7 +1,7 @@
 Table of Contents
 =================
 
-  * [OSG Connect R Tutorial](#osg-connect-r-tutorial)
+  * [R Tutorial](#osg-connect-r-tutorial)
     * [Overview](#overview)
     * [Accessing R on the submit host](#accessing-r-on-the-submit-host)
     * [Running R code](#running-r-code)
@@ -12,7 +12,7 @@ Table of Contents
     * [Help](#help-1)
 
 
-#OSG Connect R Tutorial
+#R Tutorial
 
 ##Overview
 This section covers how to use the OASIS system to run a real application like R statistical package. For this example, we'll estimate the value of pi using a Monte Carlo method. We'll first run the program locally, then create a submit file, send it out to OSG-Connect, and collate our results.
