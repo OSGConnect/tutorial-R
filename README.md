@@ -1,7 +1,6 @@
 Table of Contents
 =================
 
-  * [R Tutorial](#osg-connect-r-tutorial)
     * [Overview](#overview)
     * [Accessing R on the submit host](#accessing-r-on-the-submit-host)
     * [Running R code](#running-r-code)
@@ -12,10 +11,9 @@ Table of Contents
     * [Help](#help-1)
 
 
-#R Tutorial
 
 ##Overview
-This section covers how to use the OASIS system to run a real application like R statistical package. For this example, we'll estimate the value of pi using a Monte Carlo method. We'll first run the program locally, then create a submit file, send it out to OSG-Connect, and collate our results.
+This tutorial describes how to compute the value of pi using the R statistical package on the OSG. For this example, we'll estimate the value of pi using a Monte Carlo method. We'll first run the program locally as a test, create a submit file, send it out to OSG-Connect, and then collate results.
 
 Background
 Some background is useful here. We define a square inscribed by a unit circle. We randomly sample points, and calculate the ratio of the points outside of the circle to the points inside for the first quadrant. This ratio approaches pi/4.
