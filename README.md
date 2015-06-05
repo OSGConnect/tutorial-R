@@ -1,7 +1,7 @@
 Table of Contents
 =================
 
-* [Using R to compute pi on OSG](#Using-R-to-compute-pi-on-OSG)
+[Using R to compute pi on OSG](#Using-R-to-compute-pi-on-OSG)
     * [Overview](#overview)
     * [Accessing R on the submit host](#accessing-r-on-the-submit-host)
     * [Running R code](#running-r-code)
