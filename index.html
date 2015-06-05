@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Tutorial-r by OSGConnect</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Tutorial-r</h1>
+        <p>Estimate Pi using the R programming language</p>
+
+        <p class="view"><a href="https://github.com/OSGConnect/tutorial-R">View the Project on GitHub <small>OSGConnect/tutorial-R</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/OSGConnect/tutorial-R/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/OSGConnect/tutorial-R/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/OSGConnect/tutorial-R">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>
+<a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
+
+<ul>
+<li>
+<a href="#Using-R-to-compute-pi-on-OSG">Using R to compute pi on OSG</a>
+
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#accessing-r-on-the-submit-host">Accessing R on the submit host</a></li>
+<li><a href="#running-r-code">Running R code</a></li>
+<li><a href="#building-the-htcondor-job">Building the HTCondor job</a></li>
+<li><a href="#submit-and-analyze">Submit and analyze</a></li>
+<li><a href="#what-to-do-next">What to do next?</a></li>
+<li><a href="#help">Help</a></li>
+</ul>
+</li>
+</ul>
+
+<h1>
+<a id="using-r-to-compute-pi-on-osg" class="anchor" href="#using-r-to-compute-pi-on-osg" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using R to compute pi on OSG</h1>
+
+<h2>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h2>
+
+<p>This tutorial describes how to compute the value of pi using the R statistical package on the OSG. For this example, we'll estimate the value of pi using a Monte Carlo method. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to OSG using OSG Connect, and then collate results when the jobs finish.</p>
+
+<h3>
+<a id="background" class="anchor" href="#background" aria-hidden="true"><span class="octicon octicon-link"></span></a>Background</h3>
+
+<p>Some background is useful here. We define a square inscribed by a unit circle. We randomly sample points, and calculate the ratio of the points outside of the circle to the points inside for the first quadrant. This ratio approaches pi/4.</p>
+
+<p>(See also: <a href="http://math.fullerton.edu/mathews/n2003/montecarlopimod.html">http://math.fullerton.edu/mathews/n2003/montecarlopimod.html</a>)</p>
+
+<p>This method converges extremely slowly, which makes it great for a CPU-intensive exercise (but bad for a real estimation!).</p>
+
+<h2>
+<a id="accessing-r-on-the-submit-host" class="anchor" href="#accessing-r-on-the-submit-host" aria-hidden="true"><span class="octicon octicon-link"></span></a>Accessing R on the submit host</h2>
+
+<p>First we'll need to create a working directory, you can either run <em>$ tutorial R</em> or type the following:</p>
+
+<pre><code>[user@login01 ~]$ mkdir tutorial-R; cd tutorial-R
+</code></pre>
+
+<p>First, we'll need to set up the system paths so we can access R correctly. This is done via OSG's [Distributed Environment Modules]. To access these modules and access R, enter:</p>
+
+<pre><code>[user@login01 ]$ source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/5.6.2/init/bash
+[user@login01 ]$ module load R
+</code></pre>
+
+<p>Once we have the path set up, we can try to run R. Don't worry if you aren't an R expert, I'm not either.</p>
+
+<pre><code>[user@login01 ]$ R
+
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-unknown-linux-gnu (64-bit)
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+  Natural language support but running in an English locale
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+&gt;
+</code></pre>
+
+<p>Great! R works. You can quit out with "q()". </p>
+
+<pre><code>&gt; q()
+Save workspace image? [y/n/c]: n
+[user@login01 ]$
+</code></pre>
+
+<h2>
+<a id="running-r-code" class="anchor" href="#running-r-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running R code</h2>
+
+<p>Now that we can run R, let's try using the pi estimation code. Create the file <em>mcpi.R</em>:</p>
+
+<div class="highlight highlight-R"><pre>
+<span class="pl-en">montecarloPi</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span>(<span class="pl-smi">trials</span>) {
+  <span class="pl-v">count</span> <span class="pl-k">=</span> <span class="pl-c1">0</span>
+  <span class="pl-k">for</span>(<span class="pl-smi">i</span> <span class="pl-k">in</span> <span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-smi">trials</span>) {
+    <span class="pl-k">if</span>((runif(<span class="pl-c1">1</span>,<span class="pl-c1">0</span>,<span class="pl-c1">1</span>)<span class="pl-k">^</span><span class="pl-c1">2</span> <span class="pl-k">+</span> runif(<span class="pl-c1">1</span>,<span class="pl-c1">0</span>,<span class="pl-c1">1</span>)<span class="pl-k">^</span><span class="pl-c1">2</span>)<span class="pl-k">&lt;</span><span class="pl-c1">1</span>) {
+      <span class="pl-v">count</span> <span class="pl-k">=</span> <span class="pl-smi">count</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>
+    }
+  }
+  <span class="pl-k">return</span>((<span class="pl-smi">count</span><span class="pl-k">*</span><span class="pl-c1">4</span>)<span class="pl-k">/</span><span class="pl-smi">trials</span>)
+}
+
+montecarloPi(<span class="pl-c1">10000000</span>)</pre></div>
+
+<p>R normally runs as an interactive shell, but it's easy to run in batch mode too.</p>
+
+<pre><code>[user@login01 ]$ Rscript --no-save mcpi.R
+[1] 3.141956
+</code></pre>
+
+<p>This should take few seconds to run. Now edit the file. Increasing the trials ten times (10000000) it will take little over a minute to run, but the estimation still isn't very good. Fortunately, this problem is pleasingly parallel since we're just sampling random points. So what do we need to do to run R on the campus grid?</p>
+
+<h2>
+<a id="building-the-htcondor-job" class="anchor" href="#building-the-htcondor-job" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building the HTCondor job</h2>
+
+<p>The first thing we're going to need to do is create a wrapper for our R environment, based on the setup we did in previous sections. Create the file <em>R-wrapper.sh</em>:</p>
+
+<div class="highlight highlight-bash"><pre><span class="pl-c">#!/bin/bash</span>
+
+EXPECTED_ARGS=1
+
+<span class="pl-k">if</span> [ <span class="pl-smi">$#</span> -ne <span class="pl-smi">$EXPECTED_ARGS</span> ]<span class="pl-k">;</span> <span class="pl-k">then</span>
+  <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span>Usage: R-wrapper.sh file.R<span class="pl-pds">"</span></span>
+  <span class="pl-c1">exit</span> 1
+<span class="pl-k">else</span>
+  <span class="pl-c1">source</span> /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/5.6.2/init/bash
+  module load R
+  Rscript <span class="pl-smi">$1</span>
+<span class="pl-k">fi</span></pre></div>
+
+<p>Notice here that we're using Rscript (equivalent to R --slave). It accepts the script as command line argument, it makes R much less verbose, and it's easier to parse the output later. If you run it at the command line, you should get similar output as above — but you can run this script without first setting up PALMS. This lets the wrapper launch R on any generic worker node under HTCondor.</p>
+
+<pre><code>[user@login01 ]$ ./R-wrapper.sh mcpi.R
+[1] 3.142524
+</code></pre>
+
+<p>Now that we've created a wrapper, let's build a HTCondor submit file around it. We'll call this one <em>R.submit</em>:</p>
+
+<pre><code>universe = vanilla
+log = log/mcpi.log.$(Cluster).$(Process)
+error = log/mcpi.err.$(Cluster).$(Process)
+output = log/mcpi.out.$(Cluster).$(Process)
+
+# Setup R path, run the mcpi.R script
+executable = R-wrapper.sh
+transfer_input_files = mcpi.R
+arguments = mcpi.R
+
+requirements = (HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE)
+queue 100 
+</code></pre>
+
+<p>Notice the requirements line? You'll need to put <em>HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE</em> any time you need software from /cvmfs. There's also one small gotcha here – make sure the "log" directory used in the submit file exists before you submit! Else HTCondor will fail because it has nowhere to write the logs.</p>
+
+<h2>
+<a id="submit-and-analyze" class="anchor" href="#submit-and-analyze" aria-hidden="true"><span class="octicon octicon-link"></span></a>Submit and analyze</h2>
+
+<p>Finally, submit the job to OSG Connect!</p>
+
+<div class="highlight highlight-bash"><pre>[user@login01 ]$ condor_submit R.submit
+Submitting job(s)....................................................................................................
+100 job(s) submitted to cluster 14027.
+[user@login01 ]$ condor_q user
+
+-- Submitter: login01.osgconnect.net <span class="pl-c1">:</span> <span class="pl-k">&lt;</span>128.135.158.173:<span class="pl-k">47839&gt;</span> <span class="pl-c1">:</span> login01.osgconnect.net
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD
+14027.0   user           8/25 22:51   0+00:00:43 R  0   0.0  R-wrapper.sh mcpi.
+14027.1   user           8/25 22:51   0+00:00:43 R  0   0.0  R-wrapper.sh mcpi.
+14027.2   user           8/25 22:51   0+00:00:31 R  0   0.0  R-wrapper.sh mcpi.
+14027.4   user           8/25 22:51   0+00:00:41 R  0   0.0  R-wrapper.sh mcpi.
+14027.5   user           8/25 22:51   0+00:00:41 R  0   0.0  R-wrapper.sh mcpi.
+...</pre></div>
+
+<p>You can follow the status of your job cluster with the connect watch command, which shows condor_q output that refreshes each 5 seconds.  Press control-C to stop watching.</p>
+
+<p>Since our jobs just output their results to standard out, we can do the final analysis from the log files. Let's see what one looks like:</p>
+
+<pre><code>[user@login01 ]$ cat log/mcpi.out.14027.1
+[1] 3.141246
+</code></pre>
+
+<p>After job completion we have 100 Monte Carlo estimates of the value of pi. Taking an average across them all should give us a closer approximation.</p>
+
+<p>We'll use a bit of awk magic to do the averaging:</p>
+
+<pre><code>[user@login01 ]$ grep "[1]" log/mcpi.out.* | awk '{sum += $2} END { print "Average =", sum/NR}'
+Average = 3.14151
+</code></pre>
+
+<p>That's pretty close! With even more sample sets — that is, more Queue jobs in the cluster — we can statistically come even closer.</p>
+
+<h2>
+<a id="what-to-do-next" class="anchor" href="#what-to-do-next" aria-hidden="true"><span class="octicon octicon-link"></span></a>What to do next?</h2>
+
+<p>The R.submit file may have included a few lines that you are unfamiliar with.  For example, $(Cluster) and $(Process) are variables that will be replaced with the job's cluster and process id.  This is useful when you have many jobs submitted in the same file.  Each output and error file will be in a separate directory.</p>
+
+<p>Also, did you notice the transfer_input_files line?  This tells HTCondor what files to transfer with the job to the worker node.  You don't have to tell it to transfer the executable, HTCondor is smart enough to know that the job will need that.  But any extra files, such as our MonteCarlo R file, will need to be explicitly listed to be transferred with the job.  You can use transfer_input_files for input data to the job, as shown in <a href="https://github.com/OSGConnect/tutorial-htcondor_transfer">Transferring data with HTCondor</a>.</p>
+
+<h2>
+<a id="help" class="anchor" href="#help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help</h2>
+
+<p>For further assistance or questions, please email <strong><em><a href="mailto:connect-support@opensciencegrid.org">connect-support@opensciencegrid.org</a></em></strong></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/OSGConnect">OSGConnect</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
