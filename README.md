@@ -20,7 +20,7 @@ Some background is useful here. We define a square inscribed by a unit circle. W
 This method converges extremely slowly, which makes it great for a CPU-intensive exercise (but bad for a real estimation!).
 
 ##Accessing R on the submit host
-First we'll need to create a working directory, you can either run *$ tutorial R* or type the following:
+First we'll need to create a working directory, you can either run `$ tutorial R` or type the following:
 ````
 [user@login01 ~]$ mkdir tutorial-R; cd tutorial-R
 ````
@@ -61,7 +61,7 @@ Save workspace image? [y/n/c]: n
 
 ##Running R code
 
-Now that we can run R, let's try using the pi estimation code. Create the file *mcpi.R*:
+Now that we can run R, let's try using the pi estimation code. Create the file `mcpi.R`:
 ````R
 
 montecarloPi <- function(trials) {
@@ -86,7 +86,7 @@ R normally runs as an interactive shell, but it's easy to run in batch mode too.
 This should take few seconds to run. Now edit the file. Increasing the trials ten times (10000000) it will take little over a minute to run, but the estimation still isn't very good. Fortunately, this problem is pleasingly parallel since we're just sampling random points. So what do we need to do to run R on the campus grid?
 
 ##Building the HTCondor job
-The first thing we're going to need to do is create a wrapper for our R environment, based on the setup we did in previous sections. Create the file *R-wrapper.sh*:
+The first thing we're going to need to do is create a wrapper for our R environment, based on the setup we did in previous sections. Create the file `R-wrapper.sh`:
 ````bash
 #!/bin/bash
  
@@ -102,7 +102,7 @@ else
 fi
 ````
 
-Notice here that we're using Rscript (equivalent to R --slave). It accepts the script as command line argument, it makes R much less verbose, and it's easier to parse the output later. If you run it at the command line, you should get similar output as above — but you can run this script without first setting up PALMS. This lets the wrapper launch R on any generic worker node under HTCondor.
+Notice here that we're using Rscript (equivalent to `R --slave`). It accepts the script as command line argument, it makes R much less verbose, and it's easier to parse the output later. If you run it at the command line, you should get similar output as above — but you can run this script without first setting up PALMS. This lets the wrapper launch R on any generic worker node under HTCondor.
 ````
 [user@login01 ]$ ./R-wrapper.sh mcpi.R
 [1] 3.142524
@@ -124,7 +124,7 @@ requirements = (HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE)
 queue 100 
 ````
 
-Notice the requirements line? You'll need to put *HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE* any time you need software from /cvmfs. There's also one small gotcha here – make sure the "log" directory used in the submit file exists before you submit! Else HTCondor will fail because it has nowhere to write the logs.
+Notice the requirements line? You'll need to put `HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE` any time you need software from /cvmfs. There's also one small gotcha here – make sure the "log" directory used in the submit file exists before you submit! Else HTCondor will fail because it has nowhere to write the logs.
 
 ##Submit and analyze
 Finally, submit the job to OSG Connect!
@@ -144,7 +144,7 @@ Submitting job(s)...............................................................
 ...
 ````
 
-You can follow the status of your job cluster with the connect watch command, which shows condor_q output that refreshes each 5 seconds.  Press control-C to stop watching.
+You can follow the status of your job cluster with the `connect watch` command, which shows `condor_q` output that refreshes each 5 seconds.  Press `control-C` to stop watching.
 
 Since our jobs just output their results to standard out, we can do the final analysis from the log files. Let's see what one looks like:
 ````
@@ -163,11 +163,9 @@ Average = 3.14151
 That's pretty close! With even more sample sets — that is, more Queue jobs in the cluster — we can statistically come even closer.
 
 ##What to do next?
-The R.submit file may have included a few lines that you are unfamiliar with.  For example, $(Cluster) and $(Process) are variables that will be replaced with the job's cluster and process id.  This is useful when you have many jobs submitted in the same file.  Each output and error file will be in a separate directory.
+The `R.submit` file may have included a few lines that you are unfamiliar with.  For example, `$(Cluster)` and `$(Process)` are variables that will be replaced with the job's cluster and process id.  This is useful when you have many jobs submitted in the same file.  Each output and error file will be in a separate directory.
 
 Also, did you notice the transfer_input_files line?  This tells HTCondor what files to transfer with the job to the worker node.  You don't have to tell it to transfer the executable, HTCondor is smart enough to know that the job will need that.  But any extra files, such as our MonteCarlo R file, will need to be explicitly listed to be transferred with the job.  You can use transfer_input_files for input data to the job, as shown in [Transferring data with HTCondor](https://github.com/OSGConnect/tutorial-htcondor_transfer).
 
 ##Help
 For further assistance or questions, please email `connect-support@opensciencegrid.org` or visit http://support.opensciencegrid.org. 
-
-
