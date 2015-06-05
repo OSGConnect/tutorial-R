@@ -9,7 +9,6 @@ Table of Contents
     * [Submit and analyze](#submit-and-analyze)
     * [What to do next?](#what-to-do-next)
     * [Help](#help)
-    * [Help](#help-1)
 
 
 #Using R to compute pi on OSG
