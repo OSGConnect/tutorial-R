@@ -1,12 +1,12 @@
 #Using R to compute pi on OSG
 
-    * [Overview](#overview)
-    * [Accessing R on the submit host](#accessing-r-on-the-submit-host)
-    * [Running R code](#running-r-code)
-    * [Building the HTCondor job](#building-the-htcondor-job)
-    * [Submit and analyze](#submit-and-analyze)
-    * [What to do next?](#what-to-do-next)
-    * [Help](#help)
+   * [Overview](#overview)
+   * [Accessing R on the submit host](#accessing-r-on-the-submit-host)
+   * [Running R code](#running-r-code)
+   * [Building the HTCondor job](#building-the-htcondor-job)
+   * [Submit and analyze](#submit-and-analyze)
+   * [What to do next?](#what-to-do-next)
+   * [Help](#help)
 
 
 ##Overview
