@@ -6,7 +6,7 @@
    * [Building the HTCondor job](#building-the-htcondor-job)
    * [Submit and analyze](#submit-and-analyze)
    * [What to do next?](#what-to-do-next)
-   * [Help](#help)
+   * [Getting Help](#getting-help)
 
 
 ##Overview
