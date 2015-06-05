@@ -9,17 +9,17 @@
    * [Getting Help](#getting-help)
 
 
-##Overview
+## Overview
 This tutorial describes how to compute the value of pi using the R statistical package on the OSG. For this example, we'll estimate the value of pi using a Monte Carlo method. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to OSG using OSG Connect, and then collate results when the jobs finish.
 
-###Background
+### Background
 Some background is useful here. We define a square inscribed by a unit circle. We randomly sample points, and calculate the ratio of the points outside of the circle to the points inside for the first quadrant. This ratio approaches pi/4.
 
 > See also: http://math.fullerton.edu/mathews/n2003/montecarlopimod.html
 
 This method converges extremely slowly, which makes it great for a CPU-intensive exercise (but bad for a real estimation!).
 
-##Accessing R on the submit host
+## Accessing R on the submit host
 First we'll need to create a working directory, you can either run `$ tutorial R` or type the following:
 ````
 [user@login01 ~]$ mkdir tutorial-R; cd tutorial-R
