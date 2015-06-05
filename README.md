@@ -1,5 +1,4 @@
-Table of Contents
-----------------
+#Using R to compute pi on OSG
 
 * [Using R to compute pi on OSG](#Using-R-to-compute-pi-on-OSG)
     * [Overview](#overview)
@@ -10,8 +9,6 @@ Table of Contents
     * [What to do next?](#what-to-do-next)
     * [Help](#help)
 
-
-#Using R to compute pi on OSG
 
 ##Overview
 This tutorial describes how to compute the value of pi using the R statistical package on the OSG. For this example, we'll estimate the value of pi using a Monte Carlo method. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to OSG using OSG Connect, and then collate results when the jobs finish.
