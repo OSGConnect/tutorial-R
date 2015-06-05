@@ -168,4 +168,4 @@ The `R.submit` file may have included a few lines that you are unfamiliar with. 
 Also, did you notice the transfer_input_files line?  This tells HTCondor what files to transfer with the job to the worker node.  You don't have to tell it to transfer the executable, HTCondor is smart enough to know that the job will need that.  But any extra files, such as our MonteCarlo R file, will need to be explicitly listed to be transferred with the job.  You can use transfer_input_files for input data to the job, as shown in [Transferring data with HTCondor](https://github.com/OSGConnect/tutorial-htcondor_transfer).
 
 ## Getting Help
-For further assistance or questions, please email to OSG User Support team  at `user-support@opensciencegrid.org` or visit http://support.opensciencegrid.org for help desk information and community forums.
+For assistance or questions, please email the OSG User Support team  at `user-support@opensciencegrid.org` or visit the [help desk and community forums](http://support.opensciencegrid.org).
