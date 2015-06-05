@@ -102,13 +102,13 @@ else
 fi
 ````
 
-Notice here that we're using Rscript (equivalent to `R --slave`). It accepts the script as command line argument, it makes R much less verbose, and it's easier to parse the output later. If you run it at the command line, you should get similar output as above — but you can run this script without first setting up PALMS. This lets the wrapper launch R on any generic worker node under HTCondor.
+Notice here that we're using Rscript (equivalent to `R --slave`). It accepts the script as command line argument, it makes `R` much less verbose, and it's easier to parse the output later. If you run it at the command line, you should get similar output as above. This lets the wrapper launch `R` on any generic worker node under HTCondor.
 ````
 [user@login01 ]$ ./R-wrapper.sh mcpi.R
 [1] 3.142524
 ````
 
-Now that we've created a wrapper, let's build a HTCondor submit file around it. We'll call this one *R.submit*:
+Now that we've created a wrapper, let's build a HTCondor submit file around it. We'll call this one `R.submit`:
 ````
 universe = vanilla
 log = log/mcpi.log.$(Cluster).$(Process)
@@ -124,7 +124,7 @@ requirements = (HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE)
 queue 100 
 ````
 
-Notice the requirements line? You'll need to put `HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE` any time you need software from /cvmfs. There's also one small gotcha here – make sure the "log" directory used in the submit file exists before you submit! Else HTCondor will fail because it has nowhere to write the logs.
+Notice the requirements line? You'll need to put `HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE` any time you need software from `/cvmfs`. There's also one small gotcha here – make sure the "log" directory used in the submit file exists before you submit! Else HTCondor will fail because it has nowhere to write the logs.
 
 ##Submit and analyze
 Finally, submit the job to OSG Connect!
