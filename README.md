@@ -75,6 +75,7 @@ This should take few seconds to run. Now edit the file. Increasing the trials te
 
 ##Building the HTCondor job
 The first thing we're going to need to do is create a wrapper for our R environment, based on the setup we did in previous sections. Create the file `R-wrapper.sh`:
+
 	#!/bin/bash
 	 
 	EXPECTED_ARGS=1
@@ -89,10 +90,12 @@ The first thing we're going to need to do is create a wrapper for our R environm
 	fi
 
 Notice here that we're using Rscript (equivalent to `R --slave`). It accepts the script as command line argument, it makes `R` much less verbose, and it's easier to parse the output later. If you run it at the command line, you should get similar output as above. This lets the wrapper launch `R` on any generic worker node under HTCondor.
+
 	$ ./R-wrapper.sh mcpi.R
 	[1] 3.142524
 
 Now that we've created a wrapper, let's build a HTCondor submit file around it. We'll call this one `R.submit`:
+
 	universe = vanilla
 	log = log/mcpi.log.$(Cluster).$(Process)
 	error = log/mcpi.err.$(Cluster).$(Process)
@@ -110,6 +113,7 @@ Notice the requirements line? You'll need to put `HAS_CVMFS_oasis_opensciencegri
 
 ##Submit and analyze
 Finally, submit the job to OSG Connect!
+
 	$ condor_submit R.submit
 	Submitting job(s)....................................................................................................
 	100 job(s) submitted to cluster 14027.
@@ -127,12 +131,14 @@ Finally, submit the job to OSG Connect!
 You can follow the status of your job cluster with the `connect watch` command, which shows `condor_q` output that refreshes each 5 seconds.  Press `control-C` to stop watching.
 
 Since our jobs just output their results to standard out, we can do the final analysis from the log files. Let's see what one looks like:
+
 	$ cat log/mcpi.out.14027.1
 	[1] 3.141246
 
 After job completion we have 100 Monte Carlo estimates of the value of pi. Taking an average across them all should give us a closer approximation.
 
 We'll use a bit of awk magic to do the averaging:
+
 	$ grep "[1]" log/mcpi.out.* | awk '{sum += $2} END { print "Average =", sum/NR}'
 	Average = 3.14151
 
