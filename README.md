@@ -1,4 +1,4 @@
-#Using R to compute pi on OSG
+[title]: - "R - Monte Carlo Sampling"
 
    * [Overview](#overview)
    * [Accessing R on the submit host](#accessing-r-on-the-submit-host)
