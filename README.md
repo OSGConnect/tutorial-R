@@ -1,5 +1,5 @@
 [title]: - "Calcuating Pi using R"
-
+[TOC]
 # Calcuating Pi using R
 
 ## Overview
