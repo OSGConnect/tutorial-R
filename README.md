@@ -12,13 +12,16 @@ This method converges extremely slowly, which makes it great for a CPU-intensive
 
 ## Accessing R on the submit host
 First we'll need to create a working directory, you can either run `$ tutorial R` or type the following:
+
 	$ mkdir tutorial-R; cd tutorial-R
 
 First, we'll need to set up the system paths so we can access R correctly. This is done via OSG's [Distributed Environment Modules]. To access these modules and access R, enter:
+
 	$ source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/5.6.2/init/bash
 	$ module load R
 
 Once we have the path set up, we can try to run R. Don't worry if you aren't an R expert, I'm not either.
+
 	$ R
 	R version 3.1.1 (2014-07-10) -- "Sock it to Me"
 	Copyright (C) 2013 The R Foundation for Statistical Computing
@@ -37,6 +40,7 @@ Once we have the path set up, we can try to run R. Don't worry if you aren't an 
 	>
 
 Great! R works. You can quit out with "q()". 
+
 	> q()
 	Save workspace image? [y/n/c]: n
 	$
@@ -57,7 +61,7 @@ Now that we can run R, let's try using the pi estimation code. Create the file `
 	
 	montecarloPi(10000000)
 
-R normally runs as an interactive shell, but it's easy to run in batch mode too.
+R normally runs as an interactive shell, but it is easy to run in batch mode too.
 
 	$ Rscript --no-save mcpi.R
 	[1] 3.141956
@@ -141,4 +145,4 @@ The `R.submit` file may have included a few lines that you are unfamiliar with. 
 Also, did you notice the transfer_input_files line?  This tells HTCondor what files to transfer with the job to the worker node.  You don't have to tell it to transfer the executable, HTCondor is smart enough to know that the job will need that.  But any extra files, such as our MonteCarlo R file, will need to be explicitly listed to be transferred with the job.  You can use transfer_input_files for input data to the job, as shown in [Transferring data with HTCondor](https://github.com/OSGConnect/tutorial-htcondor_transfer).
 
 ## Getting Help
-For assistance or questions, please email the OSG User Support team  at `user-support@opensciencegrid.org` or visit the [help desk and community forums](http://support.opensciencegrid.org).
+For assistance or questions, please email the OSG User Support team  at <mailto:user-support@opensciencegrid.org> or visit the [help desk and community forums](http://support.opensciencegrid.org).
