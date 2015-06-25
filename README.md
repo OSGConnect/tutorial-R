@@ -1,14 +1,5 @@
 [title]: - "R - Monte Carlo Sampling"
 
-   * [Overview](#overview)
-   * [Accessing R on the submit host](#accessing-r-on-the-submit-host)
-   * [Running R code](#running-r-code)
-   * [Building the HTCondor job](#building-the-htcondor-job)
-   * [Submit and analyze](#submit-and-analyze)
-   * [What to do next?](#what-to-do-next)
-   * [Getting Help](#getting-help)
-
-
 ## Overview
 This tutorial describes how to compute the value of pi using the R statistical package on the OSG. For this example, we'll estimate the value of pi using a Monte Carlo method. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to OSG using OSG Connect, and then collate results when the jobs finish.
 
