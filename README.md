@@ -61,7 +61,7 @@ Now that we can run R, let's try using the pi estimation code. Create the file `
 	  return((count*4)/trials)
 	}
 	
-	montecarloPi(10000000)
+	montecarloPi(1000)
 
 R normally runs as an interactive shell, but it is easy to run in batch mode too.
 
