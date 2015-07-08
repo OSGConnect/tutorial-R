@@ -94,9 +94,9 @@ Notice here that we're using Rscript (equivalent to `R --slave`). It accepts the
 Now that we've created a wrapper, let's build a HTCondor submit file around it. We'll call this one `R.submit`:
 
 	universe = vanilla
-	log = log/mcpi.log.$(Cluster).$(Process)
-	error = log/mcpi.err.$(Cluster).$(Process)
-	output = log/mcpi.out.$(Cluster).$(Process)
+	log = mcpi.log.$(Cluster).$(Process)
+	error = mcpi.err.$(Cluster).$(Process)
+	output = mcpi.out.$(Cluster).$(Process)
 		 
 	# Setup R path, run the mcpi.R script
 	executable = R-wrapper.sh
