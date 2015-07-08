@@ -4,10 +4,10 @@ Executable = R-wrapper.sh
 arguments = mcpi.R
 transfer_input_files = mcpi.R 
 
-output = job.out.$(Process)
-error = job.error.$(Process)
-log = job.log.$(Process)
+log = log/mcpi.log.$(Cluster).$(Process)
+error = log/mcpi.err.$(Cluster).$(Process)
+output = log/mcpi.out.$(Cluster).$(Process)
 
 requirements = (HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE)
-queue 1
+queue 100
 
