@@ -21,6 +21,7 @@ First, we'll need to set up the system paths so we can access R correctly. This 
 
 	$ source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/5.6.2/init/bash
 	$ module load R
+	
 
 Once we have the path set up, we can try to run R. Don't worry if you aren't an R expert, I'm not either.
 
@@ -83,6 +84,7 @@ The first thing we're going to need to do is create a wrapper for our R environm
 	else
 	  source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/5.6.2/init/bash
 	  module load R
+	  module load libgfortran
 	  Rscript $1
 	fi
 
