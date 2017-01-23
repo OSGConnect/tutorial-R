@@ -8,5 +8,6 @@ if [ $# -ne $EXPECTED_ARGS ]; then
 else
   source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/current/init/bash
   module load R
+  module load libgfortran
   Rscript $1
 fi
