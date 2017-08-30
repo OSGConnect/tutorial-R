@@ -19,7 +19,7 @@ First we'll need to create a working directory, you can either run `$ tutorial R
 
 First, we'll need to set up the system paths so we can access R correctly. This is done via OSG's [Distributed Environment Modules]. To access these modules and access R, enter:
 
-	$ source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/5.6.2/init/bash
+	$ source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/current/init/bash
 	$ module load R
 	
 
@@ -82,7 +82,7 @@ The first thing we're going to need to do is create a wrapper for our R environm
 	  echo "Usage: R-wrapper.sh file.R"
 	  exit 1
 	else
-	  source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/5.6.2/init/bash
+	  source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/current/init/bash
 	  module load R
 	  module load libgfortran
 	  Rscript $1
@@ -105,10 +105,10 @@ Now that we've created a wrapper, let's build a HTCondor submit file around it. 
 	transfer_input_files = mcpi.R
 	arguments = mcpi.R
 		 
-	requirements = (HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE)
+	requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
 	queue 100 
 
-Notice the requirements line? You'll need to put `HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE` any time you need software from `/cvmfs`. There's also one small gotcha here – make sure the "log" directory used in the submit file exists before you submit! Else HTCondor will fail because it has nowhere to write the logs.
+Notice the requirements line? You'll need to put `HAS_MODULES == True` any time you need software from `/cvmfs`. There's also one small gotcha here – make sure the "log" directory used in the submit file exists before you submit! Else HTCondor will fail because it has nowhere to write the logs.
 
 ##Submit and analyze
 Finally, submit the job to OSG Connect!
