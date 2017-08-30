@@ -8,6 +8,6 @@ log = mcpi.log.$(Cluster).$(Process)
 error = mcpi.err.$(Cluster).$(Process)
 output = mcpi.out.$(Cluster).$(Process)
 
-requirements = (HAS_CVMFS_oasis_opensciencegrid_org =?= TRUE)
+requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
 queue 100
 
