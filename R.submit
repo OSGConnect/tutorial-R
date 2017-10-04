@@ -9,5 +9,5 @@ error = mcpi.err.$(Cluster).$(Process)
 output = mcpi.out.$(Cluster).$(Process)
 
 requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
-queue 100
+queue 10
 
