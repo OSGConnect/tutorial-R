@@ -108,7 +108,7 @@ Now that we've created a wrapper, let's build a HTCondor submit file around it. 
 	requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
 	queue 100
 
-Notice the requirements line? You'll need to put `HAS_MODULES == True` any time you need software from `/cvmfs`. There's also one small gotcha here – make sure the "log" directory used in the submit file exists before you submit! Else HTCondor will fail because it has nowhere to write the logs.
+Notice the requirements line? You'll need to put `HAS_MODULES == True` any time you need software from `/cvmfs`.
 
 ##Submit and analyze
 Finally, submit the job to OSG Connect!
