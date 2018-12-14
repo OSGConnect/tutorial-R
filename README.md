@@ -21,6 +21,7 @@ First, we'll need to set up the system paths so we can access R correctly. This 
 
 	$ source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/current/init/bash
 	$ module load R
+	$ module load libgfortran
 	
 
 Once we have the path set up, we can try to run R. Don't worry if you aren't an R expert, I'm not either.
