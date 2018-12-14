@@ -21,6 +21,7 @@ First, we'll need to set up the system paths so we can access R correctly. This 
 
 	$ source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/current/init/bash
 	$ module load R
+	$ module load libgfortran
 	
 
 Once we have the path set up, we can try to run R. Don't worry if you aren't an R expert, I'm not either.
@@ -108,7 +109,7 @@ Now that we've created a wrapper, let's build a HTCondor submit file around it. 
 	requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
 	queue 100
 
-Notice the requirements line? You'll need to put `HAS_MODULES == True` any time you need software from `/cvmfs`. There's also one small gotcha here – make sure the "log" directory used in the submit file exists before you submit! Else HTCondor will fail because it has nowhere to write the logs.
+Notice the requirements line? You'll need to put `HAS_MODULES == True` any time you need software from `/cvmfs`.
 
 ##Submit and analyze
 Finally, submit the job to OSG Connect!
