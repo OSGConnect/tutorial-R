@@ -15,32 +15,38 @@ This method converges extremely slowly, which makes it great for a CPU-intensive
 ## Accessing R on the submit host
 First we'll need to create a working directory, you can either run `$ tutorial R` or type the following:
 
-	$ mkdir tutorial-R; cd tutorial-R
+	$ mkdir tutorial-R
+	$ cd tutorial-R
 
 First, we'll need to set up the system paths so we can access R correctly. This is done via OSG's [Distributed Environment Modules]. To access these modules and access R, enter:
 
-	$ source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/current/init/bash
-	$ module load R
+	$ module load r
 	
 
 Once we have the path set up, we can try to run R. Don't worry if you aren't an R expert, I'm not either.
 
 	$ R
-	R version 3.1.1 (2014-07-10) -- "Sock it to Me"
-	Copyright (C) 2013 The R Foundation for Statistical Computing
-	Platform: x86_64-unknown-linux-gnu (64-bit)
+
+	R version 3.5.1 (2018-07-02) -- "Feather Spray"
+	Copyright (C) 2018 The R Foundation for Statistical Computing
+	Platform: x86_64-pc-linux-gnu (64-bit)
+
 	R is free software and comes with ABSOLUTELY NO WARRANTY.
 	You are welcome to redistribute it under certain conditions.
 	Type 'license()' or 'licence()' for distribution details.
+
 	  Natural language support but running in an English locale
+
 	R is a collaborative project with many contributors.
 	Type 'contributors()' for more information and
 	'citation()' on how to cite R or R packages in publications.
+
 	Type 'demo()' for some demos, 'help()' for on-line help, or
 	'help.start()' for an HTML browser interface to help.
 	Type 'q()' to quit R.
-		 
-	>
+
+	> 
+
 
 Great! R works. You can quit out with "q()". 
 
@@ -67,9 +73,9 @@ Now that we can run R, let's try using the pi estimation code. Create the file `
 R normally runs as an interactive shell, but it is easy to run in batch mode too.
 
 	$ Rscript --no-save mcpi.R
-	[1] 3.141956
+	[1] 3.14
 
-This should take few seconds to run. Now edit the file. Increasing the trials ten times (10000000) it will take little over a minute to run, but the estimation still isn't very good. Fortunately, this problem is pleasingly parallel since we're just sampling random points. So what do we need to do to run R on the campus grid?
+This should take few seconds to run. Now edit the file so the line `montecarloPi(1000)` reads `montecarloPi(10000000)`. Increasing the trials ten times (10000000) it will take little over a minute to run, but the estimation still isn't very good. Fortunately, this problem is pleasingly parallel since we're just sampling random points. So what do we need to do to run R on the campus grid?
 
 ##Building the HTCondor job
 The first thing we're going to need to do is create a wrapper for our R environment, based on the setup we did in previous sections. Create the file `R-wrapper.sh`:
@@ -82,39 +88,37 @@ The first thing we're going to need to do is create a wrapper for our R environm
 	  echo "Usage: R-wrapper.sh file.R"
 	  exit 1
 	else
-	  source /cvmfs/oasis.opensciencegrid.org/osg/modules/lmod/current/init/bash
-	  module load R
-	  module load libgfortran
+	  module load r
 	  Rscript $1
 	fi
 
-Notice here that we're using Rscript (equivalent to `R --slave`). It accepts the script as command line argument, it makes `R` much less verbose, and it's easier to parse the output later. If you run it at the command line, you should get similar output as above. This lets the wrapper launch `R` on any generic worker node under HTCondor.
+Notice here that we're using `Rscript` (equivalent to `R --slave`). It accepts the script as command line argument, it makes `R` much less verbose, and it's easier to parse the output later. If you run it at the command line, you should get similar output as above. This lets the wrapper launch `R` on any generic worker node under HTCondor.
 
 	$ ./R-wrapper.sh mcpi.R
 	[1] 3.142524
 
 Now that we've created a wrapper, let's build a HTCondor submit file around it. We'll call this one `R.submit`:
 
-	universe = vanilla
-	log = mcpi.log.$(Cluster).$(Process)
-	error = mcpi.err.$(Cluster).$(Process)
-	output = mcpi.out.$(Cluster).$(Process)
-		 
-	# Setup R path, run the mcpi.R script
-	executable = R-wrapper.sh
-	transfer_input_files = mcpi.R
+	Executable = R-wrapper.sh
 	arguments = mcpi.R
-		 
-	requirements = OSGVO_OS_STRING == "RHEL 6" && Arch == "X86_64" && HAS_MODULES == True
+	transfer_input_files = mcpi.R 
+
+	log = log/mcpi.log.$(Cluster).$(Process)
+	error = log/mcpi.err.$(Cluster).$(Process)
+	output = log/mcpi.out.$(Cluster).$(Process)
+
+	requirements = HAS_MODULES == True && OSGVO_OS_STRING == "RHEL 7" && Arch == "X86_64"
 	queue 100
 
-Notice the requirements line? You'll need to put `HAS_MODULES == True` any time you need software from `/cvmfs`. There's also one small gotcha here – make sure the "log" directory used in the submit file exists before you submit! Else HTCondor will fail because it has nowhere to write the logs.
+Notice the requirements line? You'll need to put `HAS_MODULES == True` any time you need software from the modules. There's also one small gotcha here – **make sure the "log" directory used in the submit file exists before you submit!**  Else HTCondor will fail because it has nowhere to write the logs.
+
+	$ mkdir log
 
 ##Submit and analyze
 Finally, submit the job to OSG Connect!
 
 	$ condor_submit R.submit
-	Submitting job(s)....................................................................................................
+	Submitting job(s)............................
 	100 job(s) submitted to cluster 14027.
 	$ condor_q user
 	 
@@ -127,7 +131,7 @@ Finally, submit the job to OSG Connect!
 	14027.5   user           8/25 22:51   0+00:00:41 R  0   0.0  R-wrapper.sh mcpi.
 	...
 
-You can follow the status of your job cluster with the `connect watch` command, which shows `condor_q` output that refreshes each 5 seconds.  Press `control-C` to stop watching.
+You can follow the status of your job cluster with the `watch condor_q` command, which shows `condor_q` output that refreshes each 2 seconds.  Press `control-C` to stop watching.
 
 Since our jobs just output their results to standard out, we can do the final analysis from the log files. Let's see what one looks like:
 
