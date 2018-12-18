@@ -21,7 +21,6 @@ First we'll need to create a working directory, you can either run `$ tutorial R
 First, we'll need to set up the system paths so we can access R correctly. This is done via OSG's [Distributed Environment Modules]. To access these modules and access R, enter:
 
 	$ module load r
-	
 
 Once we have the path set up, we can try to run R. Don't worry if you aren't an R expert, I'm not either.
 
