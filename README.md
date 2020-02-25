@@ -14,8 +14,7 @@ First we'll need to create a working directory, you can either run `$ tutorial R
 
 R is installed using modules on OSG. To load this modules and access R, enter:
 
-	$ module load r/3.5.1-py2.7
-	
+	$ module load r	
 
 Now, we can try to run R:
 
@@ -66,7 +65,7 @@ To prepare our R job to run on OSG, we need to create a wrapper for our R enviro
 
 	#!/bin/bash
 	 
-    module load r/3.5.1-py2.7
+    module load r
     Rscript --no-save hello_world.R
 
 Change the permissions on the wrapper script so it is executable and then test it for correct output:

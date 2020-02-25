@@ -1,5 +1,5 @@
 #!/bin/bash
 
-module load r/3.5.1-py2.7
+module load r
 Rscript --no-save hello_world.R
 
