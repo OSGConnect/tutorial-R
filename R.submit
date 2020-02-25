@@ -1,11 +1,15 @@
+universe = vanilla
+log = R.log.$(Cluster).$(Process)
+error = R.err.$(Cluster).$(Process)
+output = R.out.$(Cluster).$(Process)
+
 executable = R-wrapper.sh
-arguments = mcpi.R
-transfer_input_files = mcpi.R 
+transfer_input_files = hello_world.R
 
-log = log/mcpi.log.$(Cluster).$(Process)
-error = log/mcpi.err.$(Cluster).$(Process)
-output = log/mcpi.out.$(Cluster).$(Process)
+request_cpus = 1
+request_memory = 1GB
+request_disk = 1GB
 
-requirements = HAS_MODULES == True && OSGVO_OS_STRING == "RHEL 7" && Arch == "X86_64"
-queue 100
+requirements = OSGVO_OS_STRING == "RHEL 7" && Arch == "X86_64" && HAS_MODULES == True
+queue 1
 

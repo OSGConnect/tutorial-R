@@ -1,11 +1,5 @@
 #!/bin/bash
 
-EXPECTED_ARGS=1
+module load r/3.5.1-py2.7
+Rscript --no-save hello_world.R
 
-if [ $# -ne $EXPECTED_ARGS ]; then
-  echo "Usage: R-wrapper.sh file.R"
-  exit 1
-else
-  module load r
-  Rscript $1
-fi
