@@ -122,4 +122,5 @@ Since our jobs prints to standard out, we can check the output files. Let's see 
 	[1] "Hello World!"
 
 ## Getting Help
+
 For assistance or questions, please email the OSG User Support team  at <mailto:support@osgconnect.net> or visit the [help desk and community forums](http://support.opensciencegrid.org).
