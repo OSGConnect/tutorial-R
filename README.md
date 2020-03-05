@@ -3,7 +3,7 @@
 [TOC]
 
 ## Overview
-This tutorial describes how to run R scripts on the OSG. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to OSG using OSG Connect, and look at the results when the jobs finish. Finally, we will talk about how to use custom R libraries on OSG Connect.
+This tutorial describes how to run R scripts on the OSG. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to OSG using OSG Connect, and look at the results when the jobs finish.
 
 ## Run R scripts on OSG
 ### Access R on the submit host
