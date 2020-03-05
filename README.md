@@ -121,6 +121,15 @@ Since our jobs prints to standard out, we can check the output files. Let's see 
 	$ cat R.out.3796250.0
 	[1] "Hello World!"
 
+## Next Steps
+
+ - [Scale Up your R jobs](https://support.opensciencegrid.org/support/solutions/articles/5000674219)
+ - [Use Custom Libraries with R](https://support.opensciencegrid.org/a/solutions/articles/5000674218)
+
+We recommend you read about how to steer your jobs with HTCondor job
+requirements - this will allow you to select good resources for your
+workload. Please see [this page](https://support.opensciencegrid.org/support/solutions/articles/5000633467-steer-your-jobs-with-htcondor-job-requirements)
+
 ## Getting Help
 
 For assistance or questions, please email the OSG User Support team  at <mailto:support@osgconnect.net> or visit the [help desk and community forums](http://support.opensciencegrid.org).
