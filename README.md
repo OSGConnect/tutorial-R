@@ -132,4 +132,4 @@ workload. Please see [this page](https://support.opensciencegrid.org/support/sol
 
 ## Getting Help
 
-For assistance or questions, please email the OSG User Support team  at <mailto:support@osgconnect.net> or visit the [help desk and community forums](http://support.opensciencegrid.org).
+For assistance or questions, please email the OSG User Support team  at <mailto:support@opensciencegrid.org>.
