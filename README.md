@@ -65,8 +65,10 @@ To prepare our R job to run on OSG, we need to create a wrapper for our R enviro
 
 	#!/bin/bash
 	 
-    module load r
-    Rscript --no-save hello_world.R
+	 # set TMPDIR variable
+	export TMPDIR=$_CONDOR_SCRATCH_DIR
+	module load r
+	Rscript --no-save hello_world.R
 
 Change the permissions on the wrapper script so it is executable and then test it for correct output:
 
