@@ -12,4 +12,3 @@ request_memory = 1GB
 request_disk = 1GB
 
 queue 1
-

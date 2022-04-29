@@ -6,6 +6,7 @@
 This tutorial describes how to run R scripts on the OSG. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to OSG using OSG Connect, and look at the results when the jobs finish.
 
 ## Run R scripts on OSG
+
 ### Access R on the submit host
 
 First we'll need to create a working directory, you can either run `$ tutorial R` or type the following:
@@ -13,10 +14,24 @@ First we'll need to create a working directory, you can either run `$ tutorial R
 	$ mkdir tutorial-R; cd tutorial-R
 
 R is run using containers on the OSG. To test it out on the submit node, we can run: 
-	$ THING HERE
+	$ singularity shell \
+            --home $PWD:/srv \
+            --pwd /srv \
+            --bind /cvmfs \
+            --scratch /var/tmp \
+            --scratch /tmp \
+            --contain --ipc --pid \
+            /cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:3.5.0
 
+> ### Other Supported R Versions
+> 
 > To see a list of all Singularity containers containing R, look at the 
 > list of [OSPool Supported Containers](https://support.opensciencegrid.org/support/solutions/articles/12000073449-view-existing-ospool-supported-containers)
+
+The previous command sometimes takes a minute or so to start. Once it starts, you 
+should see the following prompt: 
+
+	$ Singularity osgvo-r:3.5.0:~> 
 
 Now, we can try to run R:
 
@@ -42,15 +57,14 @@ Now, we can try to run R:
 
 	> 
 
-Great! R works. You can quit out with `q()`. 
+You can quit out with `q()`. 
 
 	> q()
 	Save workspace image? [y/n/c]: n
-	$
+	Singularity osgvo-r:3.5.0:~>
 
-And then quit out of the container with `exit`: 
-	Singularity> exit
-	$ 
+Great! R works. We'll leave the container running for the next step. See below 
+on how to exit from the container. 
 
 ### Run R code
 
@@ -60,7 +74,12 @@ Now that we can run R, let's create a small script. Create the file `hello_world
 
 To run this script, we will use the `Rscript` command (equivalent to `R CMD BATCH`) which accepts the script as command line argument. This approach makes `R` much less verbose, and it's easier to parse the output later. The command in our script will look like this: 
 
-	Rscript hello_world.R
+	Singularity osgvo-r:3.5.0:~> Rscript hello_world.R
+
+If this works, we'll exit the container for now with `exit`: 
+
+	Singularity osgvo-r:3.5.0:~> exit
+	$ 
 
 ### Build the HTCondor job
 
@@ -84,7 +103,7 @@ Now that we've created a wrapper, let's build a HTCondor submit file around it. 
 	error = R.err.$(Cluster).$(Process)
 	output = R.out.$(Cluster).$(Process)
 
-	+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:4.0.2" 
+	+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:3.5.0" 
 	executable = R-wrapper.sh
 	transfer_input_files = hello_world.R
 	
@@ -100,7 +119,6 @@ to test R above.
 The `R.submit` file may have included a few lines that you are unfamiliar with.  For example, `$(Cluster)` and `$(Process)` are variables that will be replaced with the job's cluster and process id.  This is useful when you have many jobs submitted in the same file.  Any output and errors will be placed in a separate file for each job.
 
 Also, did you see the transfer_input_files line?  This tells HTCondor what files to transfer with the job to the worker node.  You don't have to tell it to transfer the executable, HTCondor is smart enough to know that the job will need that.  But any extra files, such as our R script file, will need to be explicitly listed to be transferred with the job.  You can use transfer_input_files for input data to the job, as shown in [Transferring data with HTCondor](https://github.com/OSGConnect/tutorial-htcondor_transfer).
-
 
 ### Submit and analyze the output
 
