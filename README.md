@@ -9,7 +9,7 @@ This tutorial describes how to run R scripts on the OSPool. We'll first run the 
 
 ### Access R on the submit host
 
-First we'll need to create a working directory, you can either run `$ tutorial R` or type the following:
+First we'll need to create a working directory, you can either run `$ tutorial R` and then type `cd tutorial-R` or type the following:
 
 	$ mkdir tutorial-R; cd tutorial-R
 
