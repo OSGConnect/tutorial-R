@@ -3,7 +3,7 @@
 [TOC]
 
 ## Overview
-This tutorial describes how to run R scripts on the OSG. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to the OSPool using OSG Connect, and look at the results when the jobs finish.
+This tutorial describes how to run R scripts on the OSPool. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to the OSPool using OSG Connect, and look at the results when the jobs finish.
 
 ## Run R scripts on OSG
 
@@ -13,7 +13,7 @@ First we'll need to create a working directory, you can either run `$ tutorial R
 
 	$ mkdir tutorial-R; cd tutorial-R
 
-R is run using containers on the OSG. To test it out on the submit node, we can run: 
+R is run using containers on the OSPool. To test it out on the submit node, we can run: 
 ```
 	singularity shell \
             --home $PWD:/srv \
