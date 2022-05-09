@@ -1,4 +1,4 @@
-[title]: - "Run R scripts on OSG"
+[title]: - "Run R scripts on the OSPool"
 
 [TOC]
 
@@ -124,7 +124,7 @@ Also, did you see the transfer_input_files line?  This tells HTCondor what files
 
 ### Submit and analyze the output
 
-Finally, submit the job to OSG Connect!
+Finally, submit the job!
 
 	$ condor_submit R.submit
 	Submitting job(s)..........
