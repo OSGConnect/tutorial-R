@@ -1,9 +1,9 @@
-[title]: - "Run R scripts on OSG"
+[title]: - "Run R scripts on the OSPool"
 
 [TOC]
 
 ## Overview
-This tutorial describes how to run R scripts on the OSG. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to OSG using OSG Connect, and look at the results when the jobs finish.
+This tutorial describes how to run R scripts on the OSPool. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to the OSPool using OSG Connect, and look at the results when the jobs finish.
 
 ## Run R scripts on OSG
 
@@ -20,6 +20,7 @@ R is run using containers on the OSG. To test it out on the submit node, we can 
 	$ singularity shell \
        /cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:3.5.0
 
+
 > ### Other Supported R Versions
 > 
 > To see a list of all Singularity containers containing R, look at the 
@@ -30,7 +31,7 @@ should see the following prompt:
 
 	Singularity osgvo-r:3.5.0:~> 
 
-Now, we can try to run R:
+Now, we can try to run R by typing `R` in our terminal: 
 
 	$ Singularity osgvo-r:3.5.0:~> R
 	
@@ -65,22 +66,22 @@ on how to exit from the container.
 
 ### Run R code
 
-Now that we can run R, let's create a small script. Create the file `hello_world.R` that contains the following:
+Now that we can run R, let's create a small script. Create the file `hello_world.R` using a text editor like nano or vim that contains the following:
 
 	print("Hello World!")
 
-To run this script, we will use the `Rscript` command (equivalent to `R CMD BATCH`) which accepts the script as command line argument. This approach makes `R` much less verbose, and it's easier to parse the output later. The command in our script will look like this: 
+We will then exit the text editing program and run this script. To run this script, we will use the `Rscript` command (equivalent to `R CMD BATCH`) which accepts the script as command line argument. This approach makes `R` much less verbose, and it's easier to parse the output later. The command in our script will look like this: 
 
 	Singularity osgvo-r:3.5.0:~> Rscript hello_world.R
 
-If this works, we'll exit the container for now with `exit`: 
+If this works, we will have `[1] "Hello World!"` printed to our terminal. Once we have this output, we'll exit the container for now with `exit`: 
 
 	Singularity osgvo-r:3.5.0:~> exit
 	$ 
 
 ### Build the HTCondor job
 
-To prepare our R job to run on OSG, we need to create a wrapper for our R environment, based on the setup we did in previous sections. Create the file `R-wrapper.sh`:
+To prepare our R job to run on the OSPool, we need to create a wrapper for our R environment, based on the setup we did in previous sections. Create the file `R-wrapper.sh` with this text inside the file:
 
 	#!/bin/bash
 	 
@@ -90,11 +91,11 @@ To prepare our R job to run on OSG, we need to create a wrapper for our R enviro
 
 	Rscript hello_world.R
 
-Change the permissions on the wrapper script: 
+Once done, exit the file. We will now change the permissions on the wrapper script: 
 
 	$ chmod +x R-wrapper.sh
 
-Now that we've created a wrapper, let's build a HTCondor submit file around it. We'll call this one `R.submit`:
+Now that we've created a wrapper, let's build a HTCondor submit file around it. Using a text editor, create a file called `R.submit` with the following text inside it:
 
 	universe = vanilla
 	log = R.log.$(Cluster).$(Process)
@@ -120,7 +121,7 @@ Also, did you see the `transfer_input_files` line?  This tells HTCondor what fil
 
 ### Submit and analyze the output
 
-Finally, submit the job to OSG Connect!
+Finally, submit the job!
 
 	$ condor_submit R.submit
 	Submitting job(s)..........
