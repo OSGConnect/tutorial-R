@@ -9,21 +9,17 @@ This tutorial describes how to run R scripts on the OSPool. We'll first run the 
 
 ### Access R on the submit host
 
-First we'll need to create a working directory, you can either run `$ tutorial R` and then type `cd tutorial-R` or type the following:
+First we'll need to create a working directory, you can either 
 
-	$ mkdir tutorial-R; cd tutorial-R
+1. run `$ tutorial R` OR
+1. type the following:
+		$ mkdir tutorial-R; cd tutorial-R
 
-R is run using containers on the OSPool. To test it out on the submit node, we can run: 
-```
-	singularity shell \
-            --home $PWD:/srv \
-            --pwd /srv \
-            --bind /cvmfs \
-            --scratch /var/tmp \
-            --scratch /tmp \
-            --contain --ipc --pid \
-            /cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:3.5.0
-```
+R is run using containers on the OSG. To test it out on the submit node, we can run: 
+
+	$ singularity shell \
+       /cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:3.5.0
+
 
 > ### Other Supported R Versions
 > 
@@ -37,7 +33,7 @@ should see the following prompt:
 
 Now, we can try to run R by typing `R` in our terminal: 
 
-        Singularity osgvo-r:3.5.0:~> R
+	$ Singularity osgvo-r:3.5.0:~> R
 	
 	R version 3.5.1 (2018-07-02) -- "Feather Spray"
 	Copyright (C) 2018 The R Foundation for Statistical Computing
@@ -90,7 +86,8 @@ To prepare our R job to run on the OSPool, we need to create a wrapper for our R
 	#!/bin/bash
 	 
 	# set TMPDIR variable
-	export TMPDIR=$_CONDOR_SCRATCH_DIR
+	mkdir rtmp
+	export TMPDIR=$_CONDOR_SCRATCH_DIR/rtmp
 
 	Rscript hello_world.R
 
@@ -120,7 +117,7 @@ to test R above.
 
 The `R.submit` file may have included a few lines that you are unfamiliar with.  For example, `$(Cluster)` and `$(Process)` are variables that will be replaced with the job's cluster and process id.  This is useful when you have many jobs submitted in the same file.  Any output and errors will be placed in a separate file for each job.
 
-Also, did you see the transfer_input_files line?  This tells HTCondor what files to transfer with the job to the worker node.  You don't have to tell it to transfer the executable, HTCondor is smart enough to know that the job will need that.  But any extra files, such as our R script file, will need to be explicitly listed to be transferred with the job.  You can use transfer_input_files for input data to the job, as shown in [Transferring data with HTCondor](https://github.com/OSGConnect/tutorial-htcondor_transfer).
+Also, did you see the `transfer_input_files` line?  This tells HTCondor what files to transfer with the job to the worker node.  You don't have to tell it to transfer the executable, HTCondor is smart enough to know that the job will need that.  But any extra files, such as our R script file, will need to be explicitly listed to be transferred with the job.  You can use transfer_input_files for input data to the job, as shown in [Transferring data with HTCondor](https://github.com/OSGConnect/tutorial-htcondor_transfer).
 
 ### Submit and analyze the output
 
@@ -146,8 +143,8 @@ Since our jobs prints to standard out, we can check the output files. Let's see 
 
 ## Next Steps
 
- - [Scale Up your R jobs](https://support.opensciencegrid.org/support/solutions/articles/5000674219)
  - [Use Custom Libraries with R](https://support.opensciencegrid.org/a/solutions/articles/5000674218)
+ - [Scale Up your R jobs](https://support.opensciencegrid.org/support/solutions/articles/5000674219)
 
 We recommend you read about how to steer your jobs with HTCondor job
 requirements - this will allow you to select good resources for your
