@@ -28,7 +28,7 @@ R is run using containers on the OSG. To test it out on the submit node, we can 
 The previous command sometimes takes a minute or so to start. Once it starts, you 
 should see the following prompt: 
 
-	$ Singularity osgvo-r:3.5.0:~> 
+	Singularity osgvo-r:3.5.0:~> 
 
 Now, we can try to run R:
 
