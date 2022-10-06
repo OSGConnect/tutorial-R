@@ -1,8 +1,10 @@
-[title]: - "Run R scripts on the OSPool"
+---
+ospool:
+    path: software_examples/r/tutorial-R/README.md
+---
 
-[TOC]
+# Run R scripts on the OSPool
 
-## Overview
 This tutorial describes how to run R scripts on the OSPool. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to the OSPool using OSG Connect, and look at the results when the jobs finish.
 
 ## Run R scripts on OSG
