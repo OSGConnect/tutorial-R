@@ -5,19 +5,19 @@ ospool:
 
 # Run R scripts on the OSPool
 
-This tutorial describes how to run R scripts on the OSPool. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to the OSPool using OSG Connect, and look at the results when the jobs finish.
+This tutorial describes how to run R scripts on the OSPool. We'll first run the program locally as a test.  After that we'll create a submit file, submit it to the OSPool using an OSPool Access Point, and look at the results when the jobs finish.
 
-## Run R scripts on OSG
+## Run R scripts
 
 ### Access R on the submit host
 
-First we'll need to create a working directory, you can either 
+First we'll need to create a working directory with our materials. You can either 
 
-1. run `$ tutorial R` OR
-1. type the following:
+1. run `$ git clone https://github.com/OSGConnect/tutorial-R` to download the materials, OR create them yourself by
+1. typing the following:
 		$ mkdir tutorial-R; cd tutorial-R
 
-R is run using containers on the OSG. To test it out on the submit node, we can run: 
+R is run using containers on the OSPool. To test it out on the submit node, we can run: 
 
 	$ singularity shell \
        /cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:3.5.0
@@ -136,7 +136,7 @@ Finally, submit the job!
 	user	   ID: 3796250   5/13 09:50      _      _      1      1 3796250.0
 	...
 
-You can follow the status of your job cluster with the `connect watch` command, which shows `condor_q` output that refreshes each 5 seconds.  Press `control-C` to stop watching.
+You can follow the status of your job cluster with the `condor_watch_q` command, which shows `condor_q` output that refreshes each 5 seconds.  Press `control-C` to stop watching.
 
 Since our jobs prints to standard out, we can check the output files. Let's see what one looks like:
 
