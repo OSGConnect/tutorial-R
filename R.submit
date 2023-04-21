@@ -1,14 +1,15 @@
-universe = vanilla
-log = R.log.$(Cluster).$(Process)
-error = R.err.$(Cluster).$(Process)
-output = R.out.$(Cluster).$(Process)
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:3.5.0"
+executable		  = hello_world.R
+# arguments
 
-+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:4.0.2"
-executable = R-wrapper.sh
-transfer_input_files = hello_world.R
+log    = R.log.$(Cluster).$(Process)
+error  = R.err.$(Cluster).$(Process)
+output = output = R.out.$(Cluster).$(Process)
 
-request_cpus = 1
++JobDurationCategory = “Medium”
+
+request_cpus   = 1
 request_memory = 1GB
-request_disk = 1GB
+request_disk   = 1GB
 
 queue 1
