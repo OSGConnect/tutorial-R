@@ -44,11 +44,11 @@ R is run using containers on the OSPool. To test it out on the Access Point, we 
 The previous command sometimes takes a minute or so to start. Once it starts, you 
 should see the following prompt: 
 
-	Singularity :~>  
+	Singularity :~/tutorial-R>  
 
 Now, we can try to run R by typing `R` in our terminal: 
 
-	$ Singularity :~>  R
+	Singularity :~/tutorial-R>  R
 	
 	R version 3.5.1 (2018-07-02) -- "Feather Spray"
 	Copyright (C) 2018 The R Foundation for Statistical Computing
@@ -74,7 +74,7 @@ You can quit out with `q()`.
 
 	> q()
 	Save workspace image? [y/n/c]: n
-	Singularity osgvo-r:3.5.0:~>
+	Singularity :~/tutorial-R>
 
 Great! R works. We'll leave the container running for the next step. See below 
 on how to exit from the container. 
@@ -83,11 +83,11 @@ on how to exit from the container.
 
 To run the R script we created [earlier](#set-up-directory-and-r-script), we just need to execute it like so: 
 
-	Singularity :~> ./hello_world.R
+	Singularity :~/tutorial-R> ./hello_world.R
 
 If this works, we will have `[1] "Hello World!"` printed to our terminal. Once we have this output, we'll exit the container for now with `exit`: 
 
-	Singularity :~>  exit
+	Singularity :~/tutorial-R>  exit
 	$ 
 
 ## Build the HTCondor Job
@@ -102,7 +102,7 @@ Let's build a HTCondor submit file to run our script. Using a text editor, creat
 	error  = R.err.$(Cluster).$(Process)
 	output = output = R.out.$(Cluster).$(Process)
 
-	+JobDurationCategory = “Medium”
+	+JobDurationCategory = "Medium"
 
 	request_cpus   = 1
 	request_memory = 1GB
