@@ -100,7 +100,7 @@ Let's build a HTCondor submit file to run our script. Using a text editor, creat
 
 	log    = R.log.$(Cluster).$(Process)
 	error  = R.err.$(Cluster).$(Process)
-	output = output = R.out.$(Cluster).$(Process)
+	output = R.out.$(Cluster).$(Process)
 
 	+JobDurationCategory = "Medium"
 
