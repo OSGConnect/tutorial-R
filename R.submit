@@ -4,7 +4,7 @@ executable        = hello_world.R
 
 log    = R.log.$(Cluster).$(Process)
 error  = R.err.$(Cluster).$(Process)
-output = output = R.out.$(Cluster).$(Process)
+output = R.out.$(Cluster).$(Process)
 
 +JobDurationCategory = "Medium"
 
