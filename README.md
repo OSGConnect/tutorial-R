@@ -137,6 +137,6 @@ Since our jobs prints to standard out, we can check the output files. Let's see 
 
 ## Related Guides for Running R Code
 
- - [Use Custom Libraries with R]()
- - [Scale Up your R jobs]()
+ - [Use Custom Libraries with R](https://portal.osg-htc.org/documentation/software_examples/r/tutorial-R-addlibSNA/)
+ - [Scale Up your R jobs](https://portal.osg-htc.org/documentation/software_examples/r/tutorial-ScalingUp-R/)
 
