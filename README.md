@@ -94,7 +94,7 @@ If this works, we will have `[1] "Hello World!"` printed to our terminal. Once w
 
 Let's build a HTCondor submit file to run our script. Using a text editor, create a file called `R.submit` with the following text inside it:
 
-	+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:3.5.0"
+	container_image = /cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-r:3.5.0
 	executable		  = hello_world.R
 	# arguments
 
@@ -110,7 +110,7 @@ Let's build a HTCondor submit file to run our script. Using a text editor, creat
 
 	queue 1
 
-The path you put in the `+SingularityImage` option should match whatever you used 
+The path you put in the `container_image` option should match whatever you used 
 to test R above. We list the R script as the executable. 
 
 The `R.submit` file may have included a few lines that you are unfamiliar with.  For example, `$(Cluster)` and `$(Process)` are variables that will be replaced with the job's cluster and process numbers - these are automatically assigned by.  This is useful when you have many jobs submitted in the same file.  Any output and errors will be placed in a separate file for each job.
